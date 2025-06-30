@@ -50,33 +50,32 @@ let totalId = todos.length + 1;
 
 // Return response berhasil
 function responseSuccess(message, data) {
-  return {
-    status: "success",
-    message,
-    data
-  };
+    return {
+        status: "success",
+        message,
+        data
+    };
 }
 
 // Format response error
 function responseError(message) {
-  return {
-    status: "error",
-    message
-  };
+    return {
+        status: "error",
+        message
+    };
 }
 
 // GET /api/todos (Ambil list to-do)
-app.get("/api/todos", (req,(res) => {
-        res.json(responseSuccess("Data retrieved successfully", todos));
-    })
-);
+app.get("/api/todos", (req, res) => {
+    res.json(responseSuccess("Data retrieved successfully", todos));
+})
 
 // POST /api/todos (Tambah to-do)
 app.post("/api/todos", (req, res) => {
     const { title, description, completed, dueDate } = req.body;
 
-    if(!title || !description || !completed || !dueDate){
-        return(res.status(400).json(responseError('All field must be filled (title, description, completed, dueDate)')))
+    if (!title || !description || !completed || !dueDate) {
+        return (res.status(400).json(responseError('All field must be filled (title, description, completed, dueDate)')))
     }
 
     const newTodo = {
@@ -94,44 +93,44 @@ app.post("/api/todos", (req, res) => {
 
 // GET /api/todos/:id (Ambil to-do dengan id spesifik)
 app.get('/api/todos/:id', (req, res) => {
-  const todo = todos.find(t => t.id === req.params.id);
+    const todo = todos.find(t => t.id === req.params.id);
 
-  if (!todo) {
-    return res.status(404).json(responseError('To-do with the given ID not found'));
-  }
+    if (!todo) {
+        return res.status(404).json(responseError('To-do with the given ID not found'));
+    }
 
-  res.json(responseSuccess('Data retrieved successfully', todo));
+    res.json(responseSuccess('Data retrieved successfully', todo));
 });
 
 // PUT /api/todos/:id (Update to-do dengan id spesifik)
 app.put("/api/todos/:id", (req, res) => {
-  const updatedTodo = todos.find(t => t.id == req.params.id);
-  if (!updatedTodo) {
-    return res.status(404).json(responseError('To-do with the given ID not found'));
-  }
+    const updatedTodo = todos.find(t => t.id == req.params.id);
+    if (!updatedTodo) {
+        return res.status(404).json(responseError('To-do with the given ID not found'));
+    }
 
-  const { title, description, completed, dueDate } = req.body;
+    const { title, description, completed, dueDate } = req.body;
 
-  updatedTodo.title = title ?? todo.title;
-  updatedTodo.description = description ?? todo.description;
-  updatedTodo.completed = completed ?? todo.completed;
-  updatedTodo.dueDate = dueDate ?? todo.dueDate;
-  
-  res.status(200).json(responseSuccess("To-do updated succesfully", updatedTodo));
+    updatedTodo.title = title ?? todo.title;
+    updatedTodo.description = description ?? todo.description;
+    updatedTodo.completed = completed ?? todo.completed;
+    updatedTodo.dueDate = dueDate ?? todo.dueDate;
+
+    res.status(200).json(responseSuccess("To-do updated succesfully", updatedTodo));
 });
 
 // DELETE /api/todos/:id (Delete item dari list to-do dengan id spesifik)
 app.delete("/api/todos/:id", (req, res) => {
-  const index = todos.findIndex(t => t.id == req.params.id);
-  if (index === -1) {
-    return res.status(404).json(responseError("To-do with the given ID not found"));
-  }
+    const index = todos.findIndex(t => t.id == req.params.id);
+    if (index === -1) {
+        return res.status(404).json(responseError("To-do with the given ID not found"));
+    }
 
-  const deleted = todos.splice(index, 1);
-  res.json(responseSuccess("To-do deleted successfully", deleted[0]));
+    const deleted = todos.splice(index, 1);
+    res.json(responseSuccess("To-do deleted successfully", deleted[0]));
 });
 
 // Jalankan server express
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
